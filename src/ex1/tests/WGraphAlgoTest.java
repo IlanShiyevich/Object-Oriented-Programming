@@ -2,6 +2,7 @@ package ex1.tests;
 import ex1.src.WGraph_Algo;
 import ex1.src.WGraph_DS;
 import ex1.src.node_info;
+import ex1.src.weighted_graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +53,7 @@ public class WGraphAlgoTest {
         assertEquals(17,b);
     }
 
+
     @Test
     void connectivity(){
         WGraph_DS g = new WGraph_DS();
@@ -67,7 +69,7 @@ public class WGraphAlgoTest {
 
         g.removeEdge(0,1);
         g0.init(g);
-        Assertions.assertFalse(g0.isConnected());
+        assertFalse(g0.isConnected());
 
         g = createGraph1();
         g0.init(g);
@@ -86,6 +88,48 @@ public class WGraphAlgoTest {
         assertTrue(g0.isConnected());
     }
 
+    @Test
+    void saveload() {
+        WGraph_DS g0 = new WGraph_DS();
+        g0.addNode(0);
+        g0.addNode(1);
+        g0.addNode(2);
+        g0.connect(0,1,1.5);
+        g0.connect(0,2,2.5);
+
+        WGraph_Algo ag0 = new WGraph_Algo();
+
+        ag0.init(g0);
+        ag0.save("g0.obj");
+
+        WGraph_DS g1 = new WGraph_DS();
+        g1.addNode(0);
+        g1.addNode(1);
+        g1.addNode(2);
+        g1.connect(0,1,1);
+        g1.connect(0,2,2);
+
+        ag0.load("g0.obj");
+
+        assertTrue(assertSL(g0,g1));
+    }
+
+    public boolean assertSL (WGraph_DS g1,  WGraph_DS g2){
+        if(g1.getMC() != g2.getMC() || g1.nodeSize() != g2.nodeSize()) return false;
+        for(node_info nodeOfG1 : g1.getV()) {
+            node_info compareToNode = g2.getNode(nodeOfG1.getKey());
+            if (compareToNode == null) {
+                return false;
+            }
+            for (node_info neighborsOfG1 : g1.getV(nodeOfG1.getKey())) {
+                 node_info compareToNode2 = g2.getNode(nodeOfG1.getKey());
+                 if (compareToNode2 == null ){
+                     return false;
+                 }
+            }
+        }
+        return true;
+    }
 
     public WGraph_DS createGraph1(){
         WGraph_DS g = new WGraph_DS();
@@ -113,33 +157,4 @@ public class WGraphAlgoTest {
         g.connect(3, 7, 5);
         return g;
     }
-
-
-
-
-//    @Test
-//    void saveload() {
-//        WGraph_DS g0 = new WGraph_DS();
-//        g0.addNode(0);
-//        g0.addNode(1);
-//        g0.addNode(2);
-//        g0.connect(0,1,1.5);
-//        g0.connect(0,2,2.5);
-//
-//        WGraph_Algo ag0 = new WGraph_Algo();
-//
-//        ag0.init(g0);
-//        ag0.save("g0.obj");
-//
-//        WGraph_DS g1 = new WGraph_DS();
-//        g1.addNode(0);
-//        g1.addNode(1);
-//        g1.addNode(2);
-//        g1.connect(0,1,1);
-//        g1.connect(0,2,2);
-//
-//        ag0.load("g0.obj");
-//
-//        assertEquals(g0,g1);
-//    }
 }

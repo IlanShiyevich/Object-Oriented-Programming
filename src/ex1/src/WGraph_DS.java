@@ -1,9 +1,6 @@
 package ex1.src;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class WGraph_DS implements weighted_graph {
     private HashMap<Integer, node> nodes;
@@ -30,8 +27,8 @@ public class WGraph_DS implements weighted_graph {
         protected HashMap<Integer,Double> weight;
 
 
-        public node(){
-            this.key = UniqueKey++;
+        public node(int key){
+            this.key = key;
             this.Info = "";
             this.Tag = 0;
             neighbors = new HashMap<>();
@@ -88,7 +85,7 @@ public class WGraph_DS implements weighted_graph {
     @Override
     public void addNode(int key) {
         if(!nodes.containsKey(key)) {
-            node newNOde = new node();
+            node newNOde = new node(key);
             nodes.put(key, newNOde);
             mc++;
         }
@@ -125,19 +122,14 @@ public class WGraph_DS implements weighted_graph {
         return c;
     }
 
+
     @Override
     public Collection<node_info> getV(int node_id) {
-        if (!nodes.containsKey(node_id) ) {
-            System.out.println("returned null");
-            return null;
+        Collection<node_info> neighbors = new LinkedList<>();
+        for(int next : nodes.get(node_id).neighbors.keySet()){
+            neighbors.add(nodes.get(next));
         }
-        Collection<node_info> c = new LinkedList<>();
-        for(Integer next : nodes.get(node_id).neighbors.keySet()){
-            node temp;
-            temp = nodes.get(next);
-            c.add(temp);
-        }
-        return c;
+        return neighbors;
     }
 
     @Override
@@ -154,9 +146,9 @@ public class WGraph_DS implements weighted_graph {
         Collection<node_info> forLoop = new ArrayList<>();
         forLoop.addAll(node_neibs);
 
-        if(node_neibs.isEmpty()) {
-            return nodes.remove(key);
-        }
+       // if(node_neibs.isEmpty()) {
+         //   return nodes.remove(key);
+       // }
 
         for (node_info neighbor_of_key: forLoop) {
             nodes.get(key).neighbors.remove(neighbor_of_key.getKey());
@@ -172,13 +164,14 @@ public class WGraph_DS implements weighted_graph {
 
     @Override
     public void removeEdge(int node1, int node2) {
-        if(nodes.get(node1) == null || nodes.get(node2) == null) return;
+        if(nodes.get(node1) == null || nodes.get(node2) == null || node1 == node2) return;
         nodes.get(node1).neighbors.remove(node2);
         nodes.get(node1).weight.remove(node2);
         nodes.get(node2).neighbors.remove(node1);
         nodes.get(node2).weight.remove(node1);
         mc++;
         numberOfEdgesInGraph--;
+
     }
 
     @Override

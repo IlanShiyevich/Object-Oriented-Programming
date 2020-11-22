@@ -1,19 +1,22 @@
 package ex1.src;
 
+import com.sun.jdi.IntegerValue;
+
 import java.io.*;
 import java.util.*;
 
 public class WGraph_Algo implements weighted_graph_algorithms{
     weighted_graph g = new WGraph_DS();
     private boolean isInitialized = false;
-    Collection<tuple> tuples;
 
     HashMap<Integer , Integer> prevNodes;
     HashMap<Integer , Double> totalCosts;
 
     HashMap<Integer, HashMap<Integer, Double>> Weight;
 
-
+    /**
+     * this class is a (comparable) object to help us in implementing the priority queue in Dijkstra's algorithm.
+     */
     private class tuple implements Comparable<tuple>{
         private int key;
         private Double distance;
@@ -51,14 +54,6 @@ public class WGraph_Algo implements weighted_graph_algorithms{
 
     }
 
-    private void makeTuples(){
-        tuples = new ArrayList<>();
-        for(node_info next : g.getV()){
-            tuple tuple = new tuple(next.getKey());
-            tuples.add(tuple);
-        }
-    }
-
     @Override
     public void init(weighted_graph g) {
         if(g == null){
@@ -69,12 +64,20 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         neighborMapping();
     }
 
+    /**
+     * returns underlying graph.
+     * @return
+     */
     @Override
     public weighted_graph getGraph() {
         if (isInitialized) return g;
         return null;
     }
 
+    /**
+     * this method deep copies a graph to a new one.
+     * @return
+     */
     @Override
     public weighted_graph copy() {
         weighted_graph copy = new WGraph_DS();
@@ -82,7 +85,8 @@ public class WGraph_Algo implements weighted_graph_algorithms{
 
         //add nodes to new graph.
         for(node_info next : g.getV()){
-            nodesOfc.put(next.getKey() ,next);
+            Integer temp = next.getKey();
+            nodesOfc.put(temp ,next);
         }
         for(node_info next : nodesOfc.values()){
             copy.addNode(next.getKey());
@@ -96,7 +100,12 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         }
         return copy;
     }
-
+    /**
+     * this method checks if the number of nodes that we visited is the same quantity of nodes that the graph has.
+     * if so the graph must be fully connected.
+     *
+     * @return
+     */
     @Override
     public boolean isConnected() {
         if (isInitialized) {
@@ -106,6 +115,11 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         return false;
     }
 
+    /**
+     * this method is Dijkstra's algorithm from a given source node.
+     *
+     * @param src
+     */
     private void Dijkstra (int src){
         totalCosts = new HashMap<>();
         prevNodes = new HashMap<>();
@@ -122,18 +136,14 @@ public class WGraph_Algo implements weighted_graph_algorithms{
                 totalCosts.put(node.getKey(),Double.MAX_VALUE);
             }
         }
-
         while(!minPQ.isEmpty()){
             tuple shortestDist = minPQ.poll();
 
             for(node_info neighbor : g.getV(shortestDist.getKey())){
-
                 if(!visited.contains(neighbor.getKey())){
-
                     double path = totalCosts.get(shortestDist.getKey()) + Weight.get(shortestDist.getKey()).get(neighbor.getKey());
 
                     if(path < totalCosts.get(neighbor.getKey())){
-
                         totalCosts.put(neighbor.getKey() , path);
                         prevNodes.put(neighbor.getKey(), shortestDist.getKey());
                         tuple tuple1 = new tuple(neighbor.getKey() , path);
@@ -143,9 +153,14 @@ public class WGraph_Algo implements weighted_graph_algorithms{
             }
             visited.add(shortestDist.getKey());
         }
-
     }
 
+    /**
+     * this method executes Dijkstra method and then  return the dest node distance(totalCosts).
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         if(isInitialized) {
@@ -154,6 +169,12 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         return totalCosts.get(dest);
     }
 
+    /**
+     * this method executes Dijkstra method, then return the linkedList of the previous nodes of dest.
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<node_info> shortestPath(int src, int dest) {
         LinkedList<node_info> query = new LinkedList<>();
@@ -191,7 +212,11 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         }
     }
 
-
+    /**
+     * this method saves the underlying graph into a file.
+     * @param file - the file name (may include a relative path).
+     * @return
+     */
     @Override
     public boolean save(String file) {
         if(isInitialized) {
@@ -216,14 +241,15 @@ public class WGraph_Algo implements weighted_graph_algorithms{
         return false;
     }
 
+    /**
+     * this method loads a graph from a file.
+     * @param file - file name
+     * @return
+     */
     @Override
     public boolean load(String file) {
         String line = "";
         weighted_graph loaded = new WGraph_DS();
-        Collection<node_info> remove = this.g.getV();
-        for(node_info next : remove) {
-            loaded.removeNode(next.getKey());
-        }
         try{
             BufferedReader br = new BufferedReader((new FileReader(file)));
 
