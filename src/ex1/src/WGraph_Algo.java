@@ -85,8 +85,7 @@ public class WGraph_Algo implements weighted_graph_algorithms{
 
         //add nodes to new graph.
         for(node_info next : g.getV()){
-            Integer temp = next.getKey();
-            nodesOfc.put(temp ,next);
+            nodesOfc.put(next.getKey(), next);
         }
         for(node_info next : nodesOfc.values()){
             copy.addNode(next.getKey());
