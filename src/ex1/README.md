@@ -4,9 +4,10 @@ The project and it's classes are designed for the use of creating a weighted gra
 
 The classes in this project are:
 WGraph_DS:
-This class represents a weighted undirected graph. This class can create a undirectional and weighted graphs and add or remove nodes or edges on a given graph. The Graph_DS class implements the weighted_graph interface.
+This class represents a weighted undirected graph. This class can create a undirectional and weighted graphs and add or remove nodes or edges on a given graph. The WGraph_DS class implements the weighted_graph interface.
 WGraph_Algo:
 This class represents a “regular” Graph Theory algorithm, including operations:
+
 0. copy.
 1. Init (graph);
 2. IsConnected- which returns true if there is a valid path from every node to each other via BFS algorithm.
@@ -15,7 +16,7 @@ This class represents a “regular” Graph Theory algorithm, including operatio
 5.save and load - Save a graph to a file and load a graph from a file.
 WGraph_Algo class implements the weighted_graph_algorithms interface.
 
-The data structure I chose for the graph(which contains all of the nodes of the graph) is hashMap.
+The main data structure in use for the the graph(which contains all of the nodes of the graph) is hashMap.
 Each entry of a Map contains exactly one unique key and its corresponding value.
 Each node contains a key and data which is exactly the mapping we need to represent the nodes key >> data pattern.
 
