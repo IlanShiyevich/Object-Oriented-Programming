@@ -1,6 +1,6 @@
 # readme for ex1 (second assignment).
  
-The project and it's classes are designed for the use of creating a weighted graph, adding/removing nodes and edges.Also performing algorithms on the graph like BFS and finding the shortest path and it's length via Dijkstra's,etc.
+The project and it's classes are designed for the use of creating a weighted graph, adding/removing nodes and edges. Also performing algorithms on the graph like BFS and finding the shortest path and it's length via Dijkstra's, etc.
 
 The classes in this project are:
 WGraph_DS:
