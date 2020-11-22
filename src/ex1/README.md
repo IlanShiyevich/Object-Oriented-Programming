@@ -16,7 +16,7 @@ This class represents a “regular” Graph Theory algorithm, including operatio
 5.save and load - Save a graph to a file and load a graph from a file.
 WGraph_Algo class implements the weighted_graph_algorithms interface.
 
-The main data structure in use for the the graph(which contains all of the nodes of the graph) is hashMap.
+The main data structure in use in ex1 is HashMap. For the the graph(which contains all of the nodes of the graph) is hashMap.
 Each entry of a Map contains exactly one unique key and its corresponding value.
 Each node contains a key and data which is exactly the mapping we need to represent the nodes key >> data pattern.
 
