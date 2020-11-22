@@ -190,7 +190,6 @@ public class WGraph_Algo implements weighted_graph_algorithms{
     }
 
 
-
     /**
      * this method creates a neighbor > weight mapping to all vertices.
      */

@@ -2,8 +2,7 @@ package ex1.tests;
 import ex1.src.WGraph_Algo;
 import ex1.src.WGraph_DS;
 import ex1.src.node_info;
-import ex1.src.weighted_graph;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -122,7 +121,7 @@ public class WGraphAlgoTest {
                 return false;
             }
             for (node_info neighborsOfG1 : g1.getV(nodeOfG1.getKey())) {
-                 node_info compareToNode2 = g2.getNode(nodeOfG1.getKey());
+                 node_info compareToNode2 = g2.getNode(neighborsOfG1.getKey());
                  if (compareToNode2 == null ){
                      return false;
                  }

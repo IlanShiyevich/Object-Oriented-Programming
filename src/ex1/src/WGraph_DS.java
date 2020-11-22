@@ -19,6 +19,9 @@ public class WGraph_DS implements weighted_graph {
         numberOfEdgesInGraph = 0;
     }
 
+    /**
+     * inner class of node.
+     */
     private class node implements node_info{
         private int key;
         private String Info;
@@ -91,6 +94,12 @@ public class WGraph_DS implements weighted_graph {
         }
     }
 
+    /**
+     * this method adds to the list of neighbors and weight of both nodes and updates the info.
+     * @param node1
+     * @param node2
+     * @param w
+     */
     @Override
     public void connect(int node1, int node2, double w) {
         if(nodes.get(node1) != null && nodes.get(node2) != null && node1 != node2 ) {
@@ -132,6 +141,11 @@ public class WGraph_DS implements weighted_graph {
         return neighbors;
     }
 
+    /**
+     * remove the edges connected to the node we want to remove and then removes the node.
+     * @param key
+     * @return
+     */
     @Override
     public node_info removeNode(int key) {
         if(nodes.get(key) == null){
@@ -145,10 +159,6 @@ public class WGraph_DS implements weighted_graph {
         numberOfEdgesInGraph =  numberOfEdgesInGraph-size;
         Collection<node_info> forLoop = new ArrayList<>();
         forLoop.addAll(node_neibs);
-
-       // if(node_neibs.isEmpty()) {
-         //   return nodes.remove(key);
-       // }
 
         for (node_info neighbor_of_key: forLoop) {
             nodes.get(key).neighbors.remove(neighbor_of_key.getKey());
